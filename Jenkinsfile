@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        DOCKER_HUB_REPO = "dataguru97/studybuddy"
+        DOCKER_HUB_REPO = "venkateshakula/studybuddyai"
         DOCKER_HUB_CREDENTIALS_ID = "dockerhub-token"
         IMAGE_TAG = "v${BUILD_NUMBER}"
     }
@@ -13,24 +13,24 @@ pipeline {
 
             }
         }        
-        // stage('Build Docker Image') {
-        //     steps {
-        //         script {
-        //             echo 'Building Docker image...'
-        //             dockerImage = docker.build("${DOCKER_HUB_REPO}:${IMAGE_TAG}")
-        //         }
-        //     }
-        // }
-        // stage('Push Image to DockerHub') {
-        //     steps {
-        //         script {
-        //             echo 'Pushing Docker image to DockerHub...'
-        //             docker.withRegistry('https://registry.hub.docker.com' , "${DOCKER_HUB_CREDENTIALS_ID}") {
-        //                 dockerImage.push("${IMAGE_TAG}")
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    echo 'Building Docker image...'
+                    dockerImage = docker.build("${DOCKER_HUB_REPO}:${IMAGE_TAG}")
+                }
+            }
+        }
+        stage('Push Image to DockerHub') {
+            steps {
+                script {
+                    echo 'Pushing Docker image to DockerHub...'
+                    docker.withRegistry('https://registry.hub.docker.com' , "${DOCKER_HUB_CREDENTIALS_ID}") {
+                        dockerImage.push("${IMAGE_TAG}")
+                    }
+                }
+            }
+        }
         // stage('Update Deployment YAML with New Tag') {
         //     steps {
         //         script {
